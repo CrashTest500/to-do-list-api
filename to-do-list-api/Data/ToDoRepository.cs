@@ -6,14 +6,20 @@ namespace to_do_list_api.Data
     {
         private static readonly List<ToDoItem> _toDoList = new();
 
-        public void AddToDoItem(ToDoItem newItem)
+        public ToDoItem AddToDoItem(ToDoItem newItem)
         {
             _toDoList.Add(newItem);
+
+            return newItem;
         }
 
-        public void CompleteToDoItem(Guid id)
+        public ToDoItem ToggleItem(Guid id)
         {
-            throw new NotImplementedException();
+            ToDoItem itemForUpdate = GetToDoItem(id);
+
+            _toDoList.FirstOrDefault(t => t.Key == itemForUpdate.Key).IsComplete = !itemForUpdate.IsComplete;
+
+            return _toDoList.FirstOrDefault(t => t.Key == itemForUpdate.Key);
         }
 
         public ToDoItem? GetToDoItem(Guid id)

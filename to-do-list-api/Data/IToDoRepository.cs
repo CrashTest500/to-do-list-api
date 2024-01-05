@@ -6,7 +6,7 @@ namespace to_do_list_api.Data
     {
         public ToDoItem? GetToDoItem(Guid id);
         public List<ToDoItem> GetToDoItems();
-        public void AddToDoItem(ToDoItem newItem);
-        public void CompleteToDoItem(Guid id);
+        public ToDoItem AddToDoItem(ToDoItem newItem);
+        public ToDoItem ToggleItem(Guid id);
     }
 }

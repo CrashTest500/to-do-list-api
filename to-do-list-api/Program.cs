@@ -70,23 +70,23 @@ app.MapPost("/todo/add", ([FromServices] IToDoRepository repo, [FromBody] string
         return Results.BadRequest(e.InnerException.Message);
     }
 
-    repo.AddToDoItem(newItem);
+    ToDoItem addedItem = repo.AddToDoItem(newItem);
 
-    return Results.Ok();
+    return Results.Ok(addedItem);
 }).WithName("Add")
 .WithOpenApi();
 
-app.MapPut("/todo/complete", ([FromServices] IToDoRepository repo, [FromBody] string idString) =>
+app.MapPut("/todo/toggle", ([FromServices] IToDoRepository repo, [FromBody] string idString) =>
 {
     if (!Guid.TryParse(idString, out Guid id))
     {
         return Results.BadRequest($"{idString} is not a proper GUID");
     }
 
-    repo.CompleteToDoItem(id);
+    ToDoItem updatedItem = repo.ToggleItem(id);
 
-    return Results.Ok();
-}).WithName("Complete")
+    return Results.Ok(updatedItem);
+}).WithName("Toggle")
 .WithOpenApi();
 
 app.Run();
