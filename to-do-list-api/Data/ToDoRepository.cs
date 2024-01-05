@@ -13,12 +13,12 @@ namespace to_do_list_api.Data
 
         public void CompleteToDoItem(Guid id)
         {
-            _toDoList.FirstOrDefault(toDo => toDo.Id == id).Status = Status.Complete;
+            throw new NotImplementedException();
         }
 
         public ToDoItem? GetToDoItem(Guid id)
         {
-            return _toDoList.FirstOrDefault(toDo => toDo.Id == id);
+            return _toDoList.FirstOrDefault(toDo => toDo.Key == id);
         }
 
         public List<ToDoItem> GetToDoItems()

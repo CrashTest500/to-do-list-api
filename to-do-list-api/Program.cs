@@ -4,6 +4,17 @@ using to_do_list_api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(p =>
+    {
+        string[] corsPolicy = Environment.GetEnvironmentVariable("CORS_WHITELIST")?.Split(',');
+        p.WithOrigins(corsPolicy);
+        p.AllowAnyMethod();
+        p.AllowAnyHeader();
+    });
+});
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -22,6 +33,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.MapGet("/todo", ([FromServices] IToDoRepository repo) =>
 {
@@ -44,9 +57,8 @@ app.MapPost("/todo/add", ([FromServices] IToDoRepository repo, [FromBody] string
 {
     ToDoItem newItem = new()
     {
-        Id = Guid.NewGuid(),
-        Description = description.Trim(),
-        Status = Status.Incomplete
+        Key = Guid.NewGuid(),
+        Description = description.Trim()
     };
 
     try
